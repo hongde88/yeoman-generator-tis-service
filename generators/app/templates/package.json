@@ -1,0 +1,95 @@
+{
+  "name": "<%= name %>",
+  "version": "<%= version %>",
+  "description": "<%= description %>",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp test-unit",
+    "start": "NODE_EXTRA_CA_CERTS=/etc/config/ca.crt node src/index.js",
+    "cover": "echo \"Runs tests and produces coverage report.  Non-devs can configure the reporter for this script as they need to.\" && nyc mocha --reporter mocha-allure-reporter test/unit/boot.js test/unit/**/*.js",
+    "coverdev": "echo \"Runs tests and produces coverage report.  Devs can configure the reporter for this script as they need to.\" && nyc mocha test/unit/boot.js test/unit/**/*.js",
+    "report": "allure generate allure-results --clean -o allure-report && allure open allure-report",
+    "dev": "nodemon -r dotenv/config --watch './src/**/*.ts' --exec 'ts-node' ./src/index.ts"
+  },
+  "repository": {
+    "type": "<%= repositoryType %>",
+    "url": "<%= repositoryUrl %>"
+  },
+  "keywords": [<%- keywords %>],
+  "author": "<%= author %>",
+  "license": "<%= license %>",
+  "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/chai-as-promised": "^7.1.0",
+    "@types/express": "^4.16.1",
+    "@types/lodash": "^4.14.161",
+    "@types/mocha": "^5.2.6",
+    "@types/node": "^10.12.19",
+    "@types/sinon": "^7.0.5",
+    "@typescript-eslint/eslint-plugin": "^4.1.1",
+    "@typescript-eslint/parser": "^4.1.1",
+    "allure-commandline": "^2.9.0",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "dotenv": "^6.2.0",
+    "eslint": "^7.9.0",
+    "eslint-config-prettier": "^6.11.0",
+    "gulp": "^4.0.0",
+    "gulp-mocha": "^6.0.0",
+    "gulp-typescript": "^5.0.0-alpha.3",
+    "husky": "^1.3.1",
+    "lint-staged": "^8.1.5",
+    "mocha": "^5.2.0",
+    "mocha-allure-reporter": "^1.4.0",
+    "mocha-typescript": "^1.1.17",
+    "nodemon": "^1.18.9",
+    "nyc": "^13.1.0",
+    "prettier": "^2.1.2",
+    "sinon": "^7.3.2",
+    "sinon-chai": "^3.2.0",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.2.4"
+  },
+  "dependencies": {
+    "@xfe/ssl-server": "^1.0.0",
+    "express": "^4.16.3",
+    "express-http-context": "^1.2.3",
+    "tis.contextpropagation": "1.0.6",
+    "tis.contextproviders": "1.0.1",
+    "tis.errorhandler": "1.1.0",
+    "tis_logger": "1.1.0",
+    "tis_service_health": "1.1.10"
+  },
+  "nyc": {
+    "extends": "@istanbuljs/nyc-config-typescript",
+    "extension": [
+      ".ts"
+    ],
+    "exclude": [
+      "test",
+      "allure-*",
+      "coverage",
+      "gulpfile.js",
+      "src/index.ts",
+      "src/routes/**/*.ts"
+    ],
+    "reporter": [
+      "text",
+      "lcov",
+      "html"
+    ],
+    "all": true
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm test"
+    }
+  },
+  "lint-staged": {
+    "./{src,test}/**/*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  }
+}
