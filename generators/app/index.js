@@ -129,6 +129,13 @@ module.exports = class extends Generator {
         description: this.props.dockerfileDescription
       }
     );
+
+    this.fs.copy(
+      this.templatePath('_gitignore'),
+      this.destinationPath('.gitignore')
+    );
+
+    this.fs.delete(this.destinationPath('_gitignore'));
   }
 
   install() {
